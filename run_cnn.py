@@ -1,27 +1,28 @@
 import tflearn
 import cv2
+import os
 import numpy as np
 from tflearn.data_preprocessing import ImagePreprocessing
 from tflearn.data_augmentation import ImageAugmentation
 
 
-print "Loading data-----------------------"
+print ("Loading data-----------------------")
 k=0
 X = []
 Y_t = []
 
 for i in [1,2,3,4,5]:
         while True:
-                img = cv2.imread('./'+str(i)+'/'+str(k)+'.jpg')
-                if img == None:
+                if os.path.exists('./'+str(i)+'/'+str(k)+'.jpg') == False:
                         break
+                img = cv2.imread('./'+str(i)+'/'+str(k)+'.jpg')
                 X.append(cv2.resize(img.astype('float'),(100,100)))
                 Y_t.append([i-1])
                 k += 1
-print X
-print Y_t
+print (X)
+print (Y_t)
 Y = tflearn.data_utils.to_categorical(Y_t,5)
-print Y
+print (Y)
 Y_t=[]
 
 '''
@@ -34,7 +35,7 @@ image_aug.add_random_flip_leftright()
 image_aug.add_random_rotation(max_angle=25.)
 '''
 
-print "Creating net----------------"
+print ("Creating net----------------")
 #t_norm=tflearn.initializations.uniform(minval=-1.0,maxval=1.0)
 
 net = tflearn.input_data(shape = [None,100,100,3]
@@ -65,16 +66,16 @@ net = tflearn.regression(net, optimizer = rm,
 
 model = tflearn.DNN(net)
 
-print "Net created ------------------"
+print ("Net created ------------------")
 
 model.load("test.tflearn")
 
-print model.predict(X[:15])
-print Y[:15]
+print (model.predict(X[:15]))
+print (Y[:15])
 
-print "Starting webbcam"
+print ("Starting webbcam")
 cam = cv2.VideoCapture(0)
-print "Web cam started" 
+print ("Web cam started" )
 
 while True:
 	ret_val, img = cam.read()
@@ -84,6 +85,6 @@ while True:
 	if k==27:
 		break
 	elif k==32:
-		print model.predict([img])
+		print (model.predict([img]))
 
 cv2.destroyAllWindows()
