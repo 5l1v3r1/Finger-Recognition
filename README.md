@@ -17,3 +17,7 @@ I have used TFLearn to create CNN and openCV to collect and store data, and to p
   <li>Use train.py to train the CNN. It automatically saves the weights when it finishes training.
   <li>Use run_cnn.py to run the finger detection. It automatically loads the saved weights.
 </ul>
+
+<hr>
+
+元リポジトリのをpython3.7に対応させました。
